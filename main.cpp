@@ -9,12 +9,12 @@
 
 
 #include <iostream>
-#include <string>
+#include <vector>
 #include <cstdlib> //JZ - allows us to invoke system commands such as 'clear' to clear the screen
 
 using namespace std;
 
-float *userInput(int numValues); //JZ - the asterisks '*' before the function or variable name tell the compiler to expect an array
+float* userInput(int numValues); //JZ - the asterisks '*' before the function or variable name tell the compiler to expect an array
 float *bubbleSort(float *values);
 float sumVal(float *values, int numVals);
 float taxVal(float totalVal);
@@ -26,7 +26,7 @@ int main()
   int numVal = 0;
   float *userVals, sumMonths = 0.0, totalTax = 0.0;
   char exitCondi = 'n' ;
-  system(clear);
+  system("clear"); //JZ - Clears the Screen
   cout << "\t\t\tWelcome to the Tax Collector!\n";
   
   while (exitCondi != 'y' /************************add a condition to exit the loop if the user inputs 'Y'************************/)
@@ -39,6 +39,7 @@ int main()
       
       //JZ - Function calls below - these are done and correct, no need to change
       *userVals = *userInput(numVal);
+      cout << "userVals done";
       *userVals = *bubbleSort(userVals);
       sumMonths = sumVal(userVals, numVal);
       totalTax = taxVal(sumMonths);
@@ -52,24 +53,32 @@ int main()
 }
 
 //JZ - Function to collect the accounting values from the user.  Input: number of values to collect (integer numValues); Output: float array of size numValues containing the user's input values.
-float *userInput(int numValues)
+float* userInput(int numValues)
 {
-  float values[numValues];  //JZ - initializes data collection array
-  int x = 0;  //JZ - initalizing counter value
+  
+  //JZ - initializes data collection array  'float*' tells the compiler we are initializing a float array with a pointer.  'new float[]' tells the compiler that we are creating an array of size numValues and putting it over the memory (and pointer) called values.
+  float* values = new float[numValues];  
+  //JZ - initalizing counter value
+  int x = 0;  
 
   //JZ - iterative loop to collect each monthly value
   for (x = 0; x < numValues; x++)
     {
-      system(clear); //JZ - clears the screen
-      cout << "\t\t\tTax Calculator!\n\nThis program collects " << numValues <<" monthly revenue values.\n";
+      system("clear"); //JZ - clears the screen
+      //JZ - outputs instructions to the user
+      cout << "\t\t\tTax Calculator!\n\nThis program collects " << numValues <<" monthly revenue values.\n"; 
       cout << "\nPlease input the total revenue for month " << x + 1 << ": ";
+      //JZ - collects user input and places it into the current pidgeonhole, x, in 'values'
       cin >> values[x];
     }
-  return (float *)values;
+  //JZ - send the complete 'values' array back to the calling function
+  cout << "end of userInput";
+  system("pause");
+  return values; 
 }
 
 //JZ - bubble sort logic.  This is complete and you do not need to do anything here.  Input: the array of monthly values; Output: the sorted monthly value list
-float *bubbleSort(float *values)
+float *bubbleSort(float *values) //JZ - note the * in front of values is a pointer to the variable we created in userInput().
 {
   bool done = false;
   int x = 0, y = 0;
